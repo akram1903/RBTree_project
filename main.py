@@ -21,4 +21,5 @@ tree1.insert_bst(node4)
 tree1.search(4)
 tree1.traverse()
 
-
+print(node2.isLeft())
+print(node2.parent)

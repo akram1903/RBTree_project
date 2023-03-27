@@ -1,3 +1,5 @@
+import traceback
+
 
 class RBNode:
     value = 0
@@ -44,6 +46,7 @@ class RBNode:
             return True
         else:
             return False
+
     def changeColor(self):
         if self.black == 0:
             self.black = 1
@@ -59,3 +62,30 @@ class RBNode:
             return f"{self.value} , Black"
         else:
             return f"{self.value} , Red"
+
+    def isRight(self):
+        if self.parent is None:
+            return True
+        if self.parent.right.value == self.value:
+            return True
+        else:
+            return False
+
+    def isLeft(self):
+        if self.parent is None:
+            return True
+        if self.parent.left.value == self.value:
+            return True
+        else:
+            return False
+
+    def isInline(self):
+        # if self.parent is None:
+        #     return True
+        if self.isRight and self.parent.isRight:
+            return True
+        elif self.isLeft and self.parent.isLeft:
+            return True
+        else:
+            print("Error :(")
+            return traceback

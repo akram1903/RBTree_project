@@ -57,15 +57,17 @@ class RBTree:
         if root.value > node.value:
             if root.left is None:
                 root.left = node
+                node.parent = root
             else:
                 self.__insert_bst(node, root.left)
         elif root.value < node.value:
             if root.right is None:
                 root.right = node
+                node.parent = root
             else:
                 self.__insert_bst(node, root.right)
 
-    def __insert_rb_naive(self, value):
+    def insert_rb_naive(self, value):
 
         search = self.search(value)
         if search[1] == 1:
