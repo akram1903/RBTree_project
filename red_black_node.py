@@ -66,16 +66,18 @@ class RBNode:
     def isRight(self):
         if self.parent is None:
             return True
-        if self.parent.right.value == self.value:
-            return True
+        if self.parent.right is not None:
+            if self.parent.right.value == self.value:
+                return True
         else:
             return False
 
     def isLeft(self):
         if self.parent is None:
             return True
-        if self.parent.left.value == self.value:
-            return True
+        if self.parent.left is not None:
+            if self.parent.left.value == self.value:
+                return True
         else:
             return False
 

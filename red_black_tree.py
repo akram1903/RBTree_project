@@ -9,14 +9,24 @@ class RBTree:
         self.root = root
 
     def __search_inner(self, value, relative_root):
-        if relative_root is None:
-            return [relative_root.parent, 0]
+        # search the node with the value in parameter then returns the node parent and a flag=1 if found and 0 otherwise
+        if relative_root is None:       # what the heck is that
+            print("__________ search inner error __________")
+            print("rel_root in the function is None")
+
         elif relative_root.value == value:
             return [relative_root.parent, 1]
         elif relative_root.value > value:
-            return self.__search_inner(value, relative_root.left)
+            if relative_root.left is None:
+                return relative_root
+            else:
+                return self.__search_inner(value, relative_root.left)
+
         else:
-            return self.__search_inner(value, relative_root.right)
+            if relative_root.right is None:
+                return relative_root
+            else:
+                return self.__search_inner(value, relative_root.right)
 
     def search(self, value):
         return self.__search_inner(value, self.root)
@@ -35,19 +45,56 @@ class RBTree:
         pass
 
     def traverse(self):
+        print("Traversing tree:\n\n")
+
         self.__traverse_inner(self.root, 0)
         pass
 
-    def get_length(self):
-        return self.__get_length(self.root, 1)
+    def get_depth_naiveBST(self):
+        print("\n\n")
+        result = self.__get_depth_naiveBST(self.root, 1, 0)
+        return result
 
-    def __get_length(self, rel_root, l):
+    def __get_depth_naiveBST(self, rel_root, l, max_depth):
         if rel_root is None:
-            return 0
-        elif rel_root.left is not None:
-            return self.__get_length(rel_root.left, l+1)
-        else:
-            return l
+            return max_depth
+        if rel_root.left is not None:
+            print(str(l+1)+'\t'+str(max_depth))
+            if l+1 > max_depth:
+                max_depth = self.__get_depth_naiveBST(rel_root.left, l + 1, l + 1)
+            else:
+                max_depth = self.__get_depth_naiveBST(rel_root.left, l + 1, max_depth)
+        if rel_root.right is not None:
+            print(str(l + 1) + '\t' + str(max_depth))
+            if l + 1 > max_depth:
+                max_depth = self.__get_depth_naiveBST(rel_root.right, l + 1, l + 1)
+            else:
+                max_depth = self.__get_depth_naiveBST(rel_root.right, l + 1, max_depth)
+
+        return max_depth
+
+    def get_depth_RB(self):
+        return self.__get_depth_RB(self.root, 1, 0)
+
+    def __get_depth_RB(self, rel_root, l, max_depth):
+        if rel_root is None:
+            return max_depth
+        if rel_root.isBlack():
+            l += 1
+        if rel_root.left is not None:
+            # print(str(l) + '\t' + str(max_depth))
+            if l > max_depth:
+                max_depth = self.__get_depth_naiveBST(rel_root.left, l, l)
+            else:
+                max_depth = self.__get_depth_naiveBST(rel_root.left, l, max_depth)
+        if rel_root.right is not None:
+            # print(str(l) + '\t' + str(max_depth))
+            if l > max_depth:
+                max_depth = self.__get_depth_naiveBST(rel_root.right, l, l)
+            else:
+                max_depth = self.__get_depth_naiveBST(rel_root.right, l, max_depth)
+
+        return max_depth
 
     def insert_bst(self, node):
         self.__insert_bst(node, self.root)
@@ -80,5 +127,33 @@ class RBTree:
             parent.left = node
         else:
             parent.right = node
+
+    def __traversal_properties(self, root, flags):
+        # leaf property
+        if root.right is None and root.left is None:
+            if not root.isBlack:
+                flags[0] = True
+        # red property
+        if (root is not None) and (not root.isBlack):
+            if (root.parent is not None) and (not root.isBlack):
+                flags[1] = True
+
+        # depth property
+
+
+    def check_traversal_properties(self):
+        flags = []
+        self.__traversal_properties(self.root, flags)
+        return flags
+
+    def check_red_black_tree(self):
+        flags = [False, False, False, False]
+        # [root property, leaf property, red property, depth property]
+        # true means rule violated false means rule not violated
+
+        if not self.root.isblack:
+            flags[0] = True
+
+        flags = [flags[0], self.check_traversal_properties()]
 
 
