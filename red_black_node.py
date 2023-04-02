@@ -53,12 +53,12 @@ class RBNode:
         elif self.black == 1:
             self.black = 0
         else:
-            print("can't recolor double double black node")
+            print("can't recolor double black node")
 
     def __str__(self):
         if self.isDoubleBlack():
             return f"{self.value} , Double Black"
-        elif self.isDoubleBlack():
+        elif self.isBlack():
             return f"{self.value} , Black"
         else:
             return f"{self.value} , Red"
@@ -91,3 +91,8 @@ class RBNode:
         else:
             print("Error :(")
             return traceback
+
+    def isLeaf(self):
+        if self.right is None and self.left is None:
+            return True
+        return False
