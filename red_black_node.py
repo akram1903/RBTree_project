@@ -96,3 +96,11 @@ class RBNode:
         if self.right is None and self.left is None:
             return True
         return False
+
+    def getPredecessor(self):
+        if self.left is not None:
+            root = self.left
+            while root.right is not None:
+                root = root.right
+            return root
+        return None

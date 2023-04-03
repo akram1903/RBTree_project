@@ -49,6 +49,38 @@ class RBTree:
         self.__categories_by_level(self.root, 0, nodes_by_level)
         return nodes_by_level
 
+    def print2DUtil(self, root, space):
+        COUNT = [10]
+        # Base case
+        if root is None:
+            return
+
+        # Increase distance between levels
+        space += COUNT[0]
+
+        # Process right child first
+        self.print2DUtil(root.right, space)
+
+        # Print current node after space
+        # count
+        print()
+        for i in range(COUNT[0], space):
+            print(end=" ")
+        print(root)
+
+        # Process left child
+        self.print2DUtil(root.left, space)
+
+    # Wrapper over print2DUtil()
+
+    def print2D(self, root):
+
+        # space=[0]
+        # Pass initial space count as 0
+        self.print2DUtil(root, 0)
+
+
+
     def traverse2(self):        # not completed
         # a traverse function closer to the visualized form of a tree
         # problem: spacing the child ,so it is in the correct place under their parents
