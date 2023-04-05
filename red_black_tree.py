@@ -258,3 +258,18 @@ class RBTree:
         if flags[3]:
             print("depth property violated")
         return False
+
+    def get_total_size(self):
+        return self.__get_total_size(self.root)
+
+    def __get_total_size(self, rel_root):
+        count = 0
+        if rel_root is not None:
+            count += 1
+            if rel_root.left is not None:
+                count += self.__get_total_size(rel_root.left)
+            if rel_root.right is not None:
+                count += self.__get_total_size(rel_root.right)
+        return count
+
+
