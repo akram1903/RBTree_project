@@ -1,3 +1,4 @@
+import copy
 import traceback
 
 
@@ -25,7 +26,7 @@ class RBNode:
             pass
         if self.parent.parent is None:
             pass
-        elif self.value < self.parent.value:
+        elif self.parent.value < self.parent.parent.value:
             return self.parent.parent.right
         else:
             return self.parent.parent.left
@@ -84,13 +85,12 @@ class RBNode:
     def isInline(self):
         # if self.parent is None:
         #     return True
-        if self.isRight and self.parent.isRight:
+        if self.isRight() and self.parent.isRight():
             return True
-        elif self.isLeft and self.parent.isLeft:
+        elif self.isLeft() and self.parent.isLeft():
             return True
         else:
-            print("Error :(")
-            return traceback
+            return False
 
     def isLeaf(self):
         if self.right is None and self.left is None:
@@ -104,3 +104,68 @@ class RBNode:
                 root = root.right
             return root
         return None
+
+    def rotate(self, tree):
+        grandParent = self.get_grand_parent()
+        y = copy.deepcopy(self.parent)
+        z = copy.deepcopy(self.get_grand_parent())
+        if self.get_sibling() is not None:
+            sibling = self.get_sibling()
+
+        if not self.isInline():
+            x = copy.deepcopy(self)
+            if y.isRight():
+                z.right = x
+            else:
+                z.left = x
+            if self.isLeft():
+                x.right = y
+                y.left = None
+            else:
+                x.left = y
+                y.right = None
+            x.parent = z
+            y.parent = x
+
+            temp = copy.deepcopy(y)
+            y = copy.deepcopy(x)
+            x = temp
+            self = copy.deepcopy(x)
+            self.parent = copy.deepcopy(y)
+
+        y.changeColor()
+        z.changeColor()
+
+        if z.parent is not None:                             # replace y with the grandparent z
+            if z.isRight():
+                self.get_grand_parent().parent.right = y
+                # z.parent.right = self.parent
+            else:
+                self.get_grand_parent().parent.left = y
+                # z.parent.left = y
+            # self.parent.parent = z.parent
+
+        if y.isRight():
+            y.left = z
+            z.right = None
+            if self.get_sibling() is not None:
+                z.right = sibling
+
+        elif y.parent is not None:
+            y.right = z
+            z.left = None
+            if self.get_sibling() is not None:
+                z.left = sibling
+        if z.parent is None:
+            y.parent = None
+            tree.root = y
+
+        z.parent = y
+        y.parent = self.get_grand_parent().parent
+        self.parent = y
+
+    def get_sibling(self):
+        if self.isRight():
+            return self.parent.left
+        else:
+            return self.parent.right

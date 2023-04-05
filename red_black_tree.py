@@ -3,7 +3,6 @@ from red_black_node import RBNode
 
 class RBTree:
     root = None
-    length = 1
 
     def __init__(self, root):
         self.root = root
@@ -102,11 +101,10 @@ class RBTree:
                 print('\t', end='')
             print(relative_root)
 
-        if relative_root.left is not None:
-            self.__traverse_inner(relative_root.left, depth+1)
-
         if relative_root.right is not None:
             self.__traverse_inner(relative_root.right, depth+1)
+        if relative_root.left is not None:
+            self.__traverse_inner(relative_root.left, depth+1)
         pass
 
     def traverse(self):
@@ -158,10 +156,16 @@ class RBTree:
         return max_depth
 
     def insert_bst(self, node):
+        if self.root is None:
+            self.root = node
+            if not node.isBlack():
+                node.changeColor()
+            pass
         self.__insert_bst(node, self.root)
         pass
 
     def __insert_bst(self, node, root):
+
         if root.value > node.value:
             if root.left is None:
                 root.left = node
@@ -271,5 +275,52 @@ class RBTree:
             if rel_root.right is not None:
                 count += self.__get_total_size(rel_root.right)
         return count
+
+    def __red_property_violated(self, node):
+        if not node.isBlack():
+            if (node.parent is not None) and (not node.parent.isBlack()):
+                return True
+
+        a = False
+        b = False
+        if node.left is not None:
+            a = self.__red_property_violated(node.left)
+        if node.right is not None:
+            b = self.__red_property_violated(node.right)
+        return a or b
+
+    def red_property_violated(self):
+        return self.__red_property_violated(self.root)
+
+    def root_property_violated(self):
+        if self.root.black == 0:
+            return True
+        else:
+            return False
+
+    def rebalance(self, new_node):
+        if new_node.get_uncle() is not None and new_node.get_uncle().black == 0:   # uncle is red
+            new_node.parent.black = 1
+            if new_node.get_uncle() is not None:
+                new_node.get_uncle().black = 1
+            new_node.get_grand_parent().black = 0
+
+            if self.root_property_violated():
+                self.root.changeColor()
+            if self.red_property_violated():
+                self.rebalance(new_node.get_grand_parent())
+        else:                                   # uncle is black
+            new_node.rotate(self)
+
+    def insert_RB_way(self, value):
+        new_node = RBNode(value, None)
+        self.insert_bst(new_node)
+        if self.root is None:
+            new_node.black = 1
+            self.root = new_node
+
+        elif self.red_property_violated():
+            self.rebalance(new_node)
+
 
 

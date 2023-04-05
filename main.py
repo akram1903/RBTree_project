@@ -18,23 +18,40 @@ node2.changeColor()
 node8.changeColor()
 node3.changeColor()
 node5.changeColor()
-node4.changeColor()
+# node4.changeColor()
 # https://github.com/akram1903/RBTree_project.git
 
-tree1 = RBTree(node5)
-tree1.insert_bst(node2)
-tree1.insert_bst(node10)
+tree1 = RBTree(None)
+# tree1.insert_bst(node2)
+# tree1.insert_bst(node10)
 # tree1.insert_bst(node1)
-tree1.insert_bst(node3)
+# tree1.insert_bst(node3)
 # tree1.insert_bst(node8)
-tree1.insert_bst(node20)
+# tree1.insert_bst(node20)
 # tree1.insert_bst(node4)
 
-tree1.traverse()
+
+tree1.insert_RB_way(7)
+tree1.insert_RB_way(1)
+tree1.insert_RB_way(3)
+tree1.insert_RB_way(2)
+tree1.insert_RB_way(5)
+tree1.insert_RB_way(8)
+tree1.insert_RB_way(10)
+tree1.insert_RB_way(4)
+tree1.insert_RB_way(6)
+tree1.insert_RB_way(9)
+
+
+# for i in range(10, 0,-1):
+#     tree1.insert_RB_way(i)
+
+
 print()
+# tree1.insert_RB_way(-1)
+# tree1.insert_RB_way(-2)
+# tree1.traverse()
 print("Tree depth is  "+str(tree1.get_depth_RB()))
-print()
 tree1.check_red_black_tree()
 tree1.print2D(tree1.root)
-print()
-print(tree1.get_total_size())
+
