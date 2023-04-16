@@ -109,30 +109,18 @@ class RBNode:
         grandParent = self.get_grand_parent()
         y = copy.deepcopy(self.parent)
         z = copy.deepcopy(self.get_grand_parent())
-        if self.get_sibling() is not None:
-            sibling = self.get_sibling()
+        sibling = self.get_sibling()
 
         if not self.isInline():
-            x = copy.deepcopy(self)
-            if y.isRight():
-                z.right = x
-            else:
-                z.left = x
-            if self.isLeft():
-                x.right = y
-                y.left = None
-            else:
-                x.left = y
+            if y.value < self.value:
+                y.left = self
                 y.right = None
-            x.parent = z
-            y.parent = x
-
-            temp = copy.deepcopy(y)
-            y = copy.deepcopy(x)
-            x = temp
-            self = copy.deepcopy(x)
-            self.parent = copy.deepcopy(y)
-
+            else:
+                y.right = self
+                y.left = None
+            temp = y.value
+            y.value = self.value
+            self.value = temp
         y.changeColor()
         z.changeColor()
 

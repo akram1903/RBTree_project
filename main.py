@@ -1,3 +1,4 @@
+import time
 
 from red_black_tree import RBTree
 from red_black_node import RBNode
@@ -30,21 +31,17 @@ tree1 = RBTree(None)
 # tree1.insert_bst(node20)
 # tree1.insert_bst(node4)
 
-
-tree1.insert_RB_way(7)
-tree1.insert_RB_way(1)
-tree1.insert_RB_way(3)
-tree1.insert_RB_way(2)
-tree1.insert_RB_way(5)
-tree1.insert_RB_way(8)
-tree1.insert_RB_way(10)
-tree1.insert_RB_way(4)
-tree1.insert_RB_way(6)
-tree1.insert_RB_way(9)
-
-
-# for i in range(10, 0,-1):
-#     tree1.insert_RB_way(i)
+file = open('EN-US-Dictionary.txt', 'r')
+read = file.readline()
+i = 0
+while len(read) != 0:
+    i += 1
+    print(i)
+    tree1.insert_RB_way(read.strip())
+    read = file.readline()
+    # tree1.print2D(tree1.root)
+    # print('\n------------------------------------------------------------------------------------------------------\n')
+    # time.sleep(2)
 
 
 print()
