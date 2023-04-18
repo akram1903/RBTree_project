@@ -6,6 +6,10 @@ class RBTree:
 
     def __init__(self, root):
         self.root = root
+        if root is None:
+            self.size = 0
+        else:
+            self.size = 1
 
     def __search_inner(self, value, relative_root):
         # search the node with the value in parameter then returns the node parent and a flag=1 if found and 0 otherwise
@@ -17,13 +21,13 @@ class RBTree:
             return [relative_root.parent, 1]
         elif relative_root.value > value:
             if relative_root.left is None:
-                return relative_root
+                return [relative_root, 0]
             else:
                 return self.__search_inner(value, relative_root.left)
 
         else:
             if relative_root.right is None:
-                return relative_root
+                return [relative_root, 0]
             else:
                 return self.__search_inner(value, relative_root.right)
 
@@ -137,25 +141,33 @@ class RBTree:
         return max_depth
 
     def get_depth_RB(self):
-        return self.__get_depth_RB(self.root, 0, 0)
+        if self.root is None:
+            return 0
+        elif self.root.left is not None:
+            return self.__get_depth_RB(self.root.left)
 
-    def __get_depth_RB(self, rel_root, l, max_depth):
-        if rel_root is None:
-            return max_depth
-
-        l += rel_root.black
-        if l > max_depth:
-            max_depth = l
+    def __get_depth_RB(self, rel_root):
+        # if rel_root is None:
+        #     return max_depth
+        #
+        # l += rel_root.black
+        # if l > max_depth:
+        #     max_depth = l
+        # if rel_root.left is not None:
+        #     # print(str(l) + '\t' + str(max_depth))
+        #     max_depth = self.__get_depth_RB(rel_root.left, l, max_depth)
+        # if rel_root.right is not None:
+        #     # print(str(l) + '\t' + str(max_depth))
+        #     max_depth = self.__get_depth_RB(rel_root.right, l, max_depth)
+        #
+        # return max_depth
         if rel_root.left is not None:
-            # print(str(l) + '\t' + str(max_depth))
-            max_depth = self.__get_depth_RB(rel_root.left, l, max_depth)
-        if rel_root.right is not None:
-            # print(str(l) + '\t' + str(max_depth))
-            max_depth = self.__get_depth_RB(rel_root.right, l, max_depth)
-
-        return max_depth
+            return rel_root.black + self.__get_depth_RB(rel_root.left)
+        else:
+            return 0
 
     def insert_bst(self, node):
+        self.size += 1
         if self.root is None:
             self.root = node
             if not node.isBlack():
@@ -165,7 +177,6 @@ class RBTree:
         pass
 
     def __insert_bst(self, node, root):
-
         if root.value > node.value:
             if root.left is None:
                 root.left = node
@@ -184,7 +195,7 @@ class RBTree:
         search = self.search(value)
         if search[1] == 1:
             print("node already exists")
-            pass
+            return 0
         parent = search[0]
         node = RBNode(value, parent)
 
@@ -299,6 +310,11 @@ class RBTree:
             return False
 
     def rebalance(self, new_node):
+        if new_node.parent is None:
+            return 'case ff'
+        if new_node.get_grand_parent() is None:
+            new_node.parent.black = 1
+            return 'case z'
         if new_node.get_uncle() is not None and new_node.get_uncle().black == 0:   # uncle is red
             new_node.parent.black = 1
             if new_node.get_uncle() is not None:
@@ -307,7 +323,7 @@ class RBTree:
 
             if self.root_property_violated():
                 self.root.changeColor()
-            if self.red_property_violated():
+            elif new_node.get_grand_parent().double_red_check():
                 self.rebalance(new_node.get_grand_parent())
         else:                                   # uncle is black
             new_node.rotate(self)
@@ -319,8 +335,16 @@ class RBTree:
             new_node.black = 1
             self.root = new_node
 
-        elif self.red_property_violated():
+        elif new_node.double_red_check():
             self.rebalance(new_node)
 
+    def __print_inorder(self, root):
+        if root.left is not None:
+            self.__print_inorder(root.left)
 
+        print(root)
+        if root.right is not None:
+            self.__print_inorder(root.right)
 
+    def print_inorder(self):
+        self.__print_inorder(self.root)

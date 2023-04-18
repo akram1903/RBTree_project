@@ -107,9 +107,13 @@ class RBNode:
 
     def rotate(self, tree):
         grandParent = self.get_grand_parent()
-        y = copy.deepcopy(self.parent)
-        z = copy.deepcopy(self.get_grand_parent())
+        y = copy.copy(self.parent)
+        z = copy.copy(self.get_grand_parent())
         sibling = self.get_sibling()
+
+        if z is None:
+            y.changeColor()
+            return 'z is None'
 
         if not self.isInline():
             if y.value < self.value:
@@ -157,3 +161,11 @@ class RBNode:
             return self.parent.left
         else:
             return self.parent.right
+
+    def double_red_check(self):     # check red property for node and its parent
+        if self.black != 0:
+            return False
+        elif self.parent is not None and self.parent.black != 0:
+            return False
+        else:
+            return True
