@@ -8,25 +8,36 @@ from tkinter import *
 
 def load():
     i = 0
-    # with open("EN-US-Dictionary.txt") as file:
-    #     for item in file:
-    #         value = item.strip()
-    #         tree1.insert_RB_way(value.lower())
-            # if i == 5:
-            #     break
-            # i += 1
-            # tree1.print_inorder()
-            # print(i,
-            #       '__________________________________________________________________________________________________')
-            # i += 1
-            # tree1.print2D(tree1.root)
+    with open("EN-US-Dictionary.txt") as file:
+        for item in file:
+            value = item.strip()
+            tree1.insert_RB_way(value.lower())
+            if i == 20:
+                break
+            tree1.print_inorder()
+            print(i,
+                  '__________________________________________________________________________________________________')
+            i += 1
+        # tree1.print2D(tree1.root)
 
-    for i in range(100000, 0, -1):
-        tree1.insert_RB_way(i)
-        print(i)
-    tree1.print_inorder()
-
-
+    # for i in range(100000, 0, -1):
+    #     tree1.insert_RB_way(i)
+    #     print(i)
+    # tree1.print_inorder()
+    # tree1.insert_RB_way(34)
+    # tree1.print2D(tree1.root)
+    # print('----------------------------------------------')
+    # tree1.insert_RB_way(26)
+    # tree1.print2D(tree1.root)
+    # print('----------------------------------------------')
+    # tree1.insert_RB_way(21)
+    # tree1.print2D(tree1.root)
+    # print('----------------------------------------------')
+    # tree1.insert_RB_way(80)
+    # tree1.print2D(tree1.root)
+    # print('----------------------------------------------')
+    # tree1.insert_RB_way(74)
+    # tree1.print2D(tree1.root)
 def insert():
     pass
 

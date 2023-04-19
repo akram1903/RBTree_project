@@ -117,43 +117,59 @@ class RBNode:
 
         if not self.isInline():
             if y.value < self.value:
-                y.left = self
-                y.right = None
+                # y.left = self
+                # y.right = None
+                y.left_rotate(tree)
             else:
-                y.right = self
-                y.left = None
-            temp = y.value
-            y.value = self.value
-            self.value = temp
+                y.right_rotate(tree)
+                # y.right = self
+                # y.left = None
+            # temp = y.value
+            # y.value = self.value
+            # self.value = temp
+            temp = copy.copy(y)
+            y = copy.copy(self)
+            self = temp
+            if y.isRight():
+                z.right = y
+            else:
+                z.left = y
         y.changeColor()
         z.changeColor()
 
-        if z.parent is not None:                             # replace y with the grandparent z
-            if z.isRight():
-                self.get_grand_parent().parent.right = y
-                # z.parent.right = self.parent
-            else:
-                self.get_grand_parent().parent.left = y
-                # z.parent.left = y
-            # self.parent.parent = z.parent
+        # if z.parent is not None:                             # replace y with the grandparent z
+        #     if z.isRight():
+        #         self.get_grand_parent().parent.right = y
+        #         # z.parent.right = self.parent
+        #     else:
+        #         self.get_grand_parent().parent.left = y
+        #         # z.parent.left = y
+        #     # self.parent.parent = z.parent
+        #
+        # if y.isRight():
+        #     y.left = z
+        #     z.right = None
+        #     if self.get_sibling() is not None:
+        #         z.right = sibling
+        #
+        # elif y.parent is not None:
+        #     y.right = z
+        #     z.left = None
+        #     if self.get_sibling() is not None:
+        #         z.left = sibling
+        # if z.parent is None:
+        #     y.parent = None
+        #     tree.root = y
+        # z.parent = y
 
         if y.isRight():
-            y.left = z
-            z.right = None
-            if self.get_sibling() is not None:
-                z.right = sibling
+            z.left_rotate(tree)
+        else:
+            z.right_rotate(tree)
+        y = z.parent
 
-        elif y.parent is not None:
-            y.right = z
-            z.left = None
-            if self.get_sibling() is not None:
-                z.left = sibling
-        if z.parent is None:
-            y.parent = None
-            tree.root = y
-
-        z.parent = y
-        y.parent = self.get_grand_parent().parent
+        if self.get_grand_parent() is not None:
+            y.parent = self.get_grand_parent().parent
         self.parent = y
 
     def get_sibling(self):
@@ -169,3 +185,41 @@ class RBNode:
             return False
         else:
             return True
+
+    def left_rotate(self, tree):
+        y = self.right
+        self.right = y.left
+        if y.left is not None:
+            y.left.parent = self
+
+        y.parent = self.parent
+        if self.parent is None:
+            tree.root = y
+        elif self.isLeft():
+            self.parent.left = y
+        else:
+            self.parent.right = y
+        y.left = self
+        self.parent = y
+        # print('###############')
+        # tree.print2D(self.parent)
+        # print('###############')
+
+    def right_rotate(self, tree):
+        y = self.left
+        self.left = y.right
+        if y.right is not None:
+            y.right.parent = self
+
+        y.parent = self.parent
+        if self.parent is None:
+            tree.root = y
+        elif self.isRight():
+            self.parent.right = y
+        else:
+            self.parent.left = y
+        y.right = self
+        self.parent = y
+        # print('###############')
+        # tree.print2D(self.parent)
+        # print('###############')
