@@ -18,7 +18,7 @@ class RBTree:
             print("rel_root in the function is None")
 
         elif relative_root.value == value:
-            return [relative_root.parent, 1]
+            return [relative_root, 1]
         elif relative_root.value > value:
             if relative_root.left is None:
                 return [relative_root, 0]
@@ -310,21 +310,19 @@ class RBTree:
             return False
 
     def rebalance(self, new_node):
-        if new_node.parent is None:
-            return 'case ff'
-        if new_node.get_grand_parent() is None:
-            new_node.parent.black = 1
-            return 'case z'
+        # if new_node.parent is None:
+        #     return 'case ff'
+        # if new_node.get_grand_parent() is None:
+        #     new_node.parent.black = 1
+        #     return 'case z'
         if new_node.get_uncle() is not None and new_node.get_uncle().black == 0:   # uncle is red
             new_node.parent.black = 1
-            if new_node.get_uncle() is not None:
-                new_node.get_uncle().black = 1
-            new_node.get_grand_parent().black = 0
+            new_node.get_uncle().black = 1
+            if self.root != new_node.get_grand_parent():
+                new_node.get_grand_parent().black = 0
+                if new_node.get_grand_parent().double_red_check():
+                    self.rebalance(new_node.get_grand_parent())
 
-            if self.root_property_violated():
-                self.root.changeColor()
-            elif new_node.get_grand_parent().double_red_check():
-                self.rebalance(new_node.get_grand_parent())
         else:                                   # uncle is black
             new_node.rotate(self)
 

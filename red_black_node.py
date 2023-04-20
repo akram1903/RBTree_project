@@ -57,9 +57,7 @@ class RBNode:
             print("can't recolor double black node")
 
     def __str__(self):
-        if self.isDoubleBlack():
-            return f"{self.value} , Double Black"
-        elif self.isBlack():
+        if self.isBlack():
             return f"{self.value} , Black"
         else:
             return f"{self.value} , Red"
@@ -111,9 +109,9 @@ class RBNode:
         z = copy.copy(self.get_grand_parent())
         sibling = self.get_sibling()
 
-        if z is None:
-            y.changeColor()
-            return 'z is None'
+        # if z is None:
+        #     y.changeColor()
+        #     return 'z is None'
 
         if not self.isInline():
             if y.value < self.value:
@@ -127,8 +125,8 @@ class RBNode:
             # temp = y.value
             # y.value = self.value
             # self.value = temp
-            temp = copy.copy(y)
-            y = copy.copy(self)
+            temp = y
+            y = self
             self = temp
             if y.isRight():
                 z.right = y
@@ -137,36 +135,36 @@ class RBNode:
         y.changeColor()
         z.changeColor()
 
-        # if z.parent is not None:                             # replace y with the grandparent z
-        #     if z.isRight():
-        #         self.get_grand_parent().parent.right = y
-        #         # z.parent.right = self.parent
-        #     else:
-        #         self.get_grand_parent().parent.left = y
-        #         # z.parent.left = y
-        #     # self.parent.parent = z.parent
-        #
-        # if y.isRight():
-        #     y.left = z
-        #     z.right = None
-        #     if self.get_sibling() is not None:
-        #         z.right = sibling
-        #
-        # elif y.parent is not None:
-        #     y.right = z
-        #     z.left = None
-        #     if self.get_sibling() is not None:
-        #         z.left = sibling
-        # if z.parent is None:
-        #     y.parent = None
-        #     tree.root = y
-        # z.parent = y
+        if z.parent is not None:                             # replace y with the grandparent z
+            if z.isRight():
+                self.get_grand_parent().parent.right = y
+                # z.parent.right = self.parent
+            else:
+                self.get_grand_parent().parent.left = y
+                # z.parent.left = y
+            # self.parent.parent = z.parent
 
         if y.isRight():
-            z.left_rotate(tree)
-        else:
-            z.right_rotate(tree)
-        y = z.parent
+            y.left = z
+            z.right = None
+            if self.get_sibling() is not None:
+                z.right = sibling
+
+        elif y.parent is not None:
+            y.right = z
+            z.left = None
+            if self.get_sibling() is not None:
+                z.left = sibling
+        if z.parent is None:
+            y.parent = None
+            tree.root = y
+        z.parent = y
+
+        # if y.isRight():
+        #     z.left_rotate(tree)
+        # else:
+        #     z.right_rotate(tree)
+        # y = z.parent
 
         if self.get_grand_parent() is not None:
             y.parent = self.get_grand_parent().parent

@@ -7,39 +7,52 @@ from tkinter import *
 
 
 def load():
-    i = 0
-    with open("EN-US-Dictionary.txt") as file:
-        for item in file:
-            value = item.strip()
-            tree1.insert_RB_way(value.lower())
-            if i == 20:
-                break
-            tree1.print_inorder()
-            print(i,
-                  '__________________________________________________________________________________________________')
-            i += 1
-        # tree1.print2D(tree1.root)
+    # i = 0
+    # with open("EN-US-Dictionary.txt") as file:
+    #     for item in file:
+    #         value = item.strip()
+    #         tree1.insert_RB_way(value.lower())
+    #         if i == 10:
+    #             break
+    #         tree1.print_inorder()
+    #         print(i,
+    #               '__________________________________________________________________________________________________')
+    #         i += 1
+    # tree1.print2D(tree1.root)
 
-    # for i in range(100000, 0, -1):
-    #     tree1.insert_RB_way(i)
-    #     print(i)
-    # tree1.print_inorder()
-    # tree1.insert_RB_way(34)
+    for i in range(1, 100000):
+        tree1.insert_RB_way(i)
+        # print(i)
+        # tree1.print2D(tree1.root)
+        print(i,'----------------------------')
+    tree1.print_inorder()
+
+    # tree1.insert_RB_way('younis')
     # tree1.print2D(tree1.root)
     # print('----------------------------------------------')
-    # tree1.insert_RB_way(26)
+    # tree1.insert_RB_way('yehia')
     # tree1.print2D(tree1.root)
     # print('----------------------------------------------')
-    # tree1.insert_RB_way(21)
+    # tree1.insert_RB_way('akram')
     # tree1.print2D(tree1.root)
     # print('----------------------------------------------')
-    # tree1.insert_RB_way(80)
+    # tree1.insert_RB_way('arkhmedes')
     # tree1.print2D(tree1.root)
     # print('----------------------------------------------')
     # tree1.insert_RB_way(74)
     # tree1.print2D(tree1.root)
+
+
 def insert():
-    pass
+    print(tree1.size)
+    ip = entry.get()
+    if ip.isalpha():
+        ip = ip.lower().strip()
+    else:
+        ip = float(ip)
+    tree1.insert_RB_way(ip.lower())
+
+    print(tree1.size)
 
 
 def search():
@@ -51,17 +64,14 @@ def search():
     result = tree1.search(ip)
 
     if result[1] == 1:
-        if result[0].value > ip:
-            node = result[0].left
-        else:
-            node = result[0].right
+        node = result[0]
 
         print("\nfound ", node, sep='\n', end='\n\n')
     else:
         print("not found, maybe you mean ", result[0], ' ??', end='\n\n')
 
 
-# sys.setrecursionlimit(98000)
+sys.setrecursionlimit(20000)
 tree1 = RBTree(None)
 
 window = Tk()
