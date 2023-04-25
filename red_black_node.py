@@ -184,7 +184,6 @@ class RBNode:
         # self.parent.parent = z
 
     def rotate_tania(self, tree):
-        # grandParent = self.get_grand_parent()
         y = self.parent
         z = self.get_grand_parent()
 
