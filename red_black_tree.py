@@ -172,9 +172,9 @@ class RBTree:
             self.root = node
             if not node.isBlack():
                 node.changeColor()
-            pass
+            return None
         self.__insert_bst(node, self.root)
-        pass
+        return None
 
     def __insert_bst(self, node, root):
         if root.value > node.value:
@@ -324,7 +324,7 @@ class RBTree:
                     self.rebalance(new_node.get_grand_parent())
 
         else:                                   # uncle is black
-            new_node.rotate(self)
+            new_node.rotate_tania(self)
 
     def insert_RB_way(self, value):
         new_node = RBNode(value, None)
